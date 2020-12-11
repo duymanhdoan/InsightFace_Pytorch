@@ -14,8 +14,10 @@ num_workers = 3
 data_mode = 'emore'
 # data root_dir paths
 rec_path ='faces_emore'
+# paths in local
 root_dir = '/home/minglee/Documents/aiProjects/generator_datav2'
-out_dir = '/home/minglee/Documents/aiProjects/generator_datav2/output_models'
+out_dir  = '/home/minglee/Documents/aiProjects/generator_datav2'
+# paths in sever
+# out_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'  #paths load data bin file and read in folder faces_emore
 
-# out_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2/history_models'
-# root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'
+# root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2' # save all folder status of models training

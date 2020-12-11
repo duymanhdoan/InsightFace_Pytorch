@@ -59,10 +59,10 @@ def load_bin(path, rootdir, transform, image_size=[112,112]):
 
     for i in range(len(bins)):
         _bin = bins[i]
-<<<<<<< HEAD
+#<<<<<<< HEAD
 #        print('->>>>>>>>>>>>>>>>> ',_bin)
-=======
->>>>>>> c158181b0b69c3ce01a62896be13c39dd1e5692e
+#=======
+#>>>>>>> c158181b0b69c3ce01a62896be13c39dd1e5692e
         img = mx.image.imdecode(_bin).asnumpy()
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         img = Image.fromarray(img.astype(np.uint8))

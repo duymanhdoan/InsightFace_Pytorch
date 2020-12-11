@@ -14,4 +14,8 @@ num_workers = 3
 data_mode = 'emore'
 # data root_dir paths
 rec_path ='faces_emore'
-root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'
+root_dir = '/home/minglee/Documents/aiProjects/generator_datav2'
+out_dir = '/home/minglee/Documents/aiProjects/generator_datav2/output_models'
+
+# out_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2/history_models'
+# root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'

@@ -18,7 +18,7 @@ if __name__ == '__main__':
     print('load bin files from load bin \n')
     for bin_file in bin_files:
         full_path = os.path.join(root_paths, bin_file + '.bin')
-        folder_path = full_path.split('.')[-2]
+        folder_path = args.out_dir
         print("full path: {} - status: {}".format(full_path, os.path.exists(full_path)))
         print("folder path: {} - status: {}".format(folder_path, os.path.exists(folder_path)))
-        load_bin(full_path,folder_path,conf.test_transform)
+        # load_bin(full_path,folder_path,conf.test_transform)

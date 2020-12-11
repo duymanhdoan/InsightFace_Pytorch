@@ -21,4 +21,4 @@ if __name__ == '__main__':
         folder_path = args.out_dir
         print("full path: {} - status: {}".format(full_path, os.path.exists(full_path)))
         print("folder path: {} - status: {}".format(folder_path, os.path.exists(folder_path)))
-        # load_bin(full_path,folder_path,conf.test_transform)
+        load_bin(full_path,folder_path,conf.test_transform)

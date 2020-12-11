@@ -59,7 +59,10 @@ def load_bin(path, rootdir, transform, image_size=[112,112]):
 
     for i in range(len(bins)):
         _bin = bins[i]
+<<<<<<< HEAD
 #        print('->>>>>>>>>>>>>>>>> ',_bin)
+=======
+>>>>>>> c158181b0b69c3ce01a62896be13c39dd1e5692e
         img = mx.image.imdecode(_bin).asnumpy()
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         img = Image.fromarray(img.astype(np.uint8))
@@ -83,8 +86,8 @@ def get_val_data(data_path):
 
 def load_mx_rec(rec_path):
     save_path = os.path.join(rec_path,'imgs')
-    if not save_path.exists():
-        save_path.mkdir()
+    if not os.path.exists(save_path):
+        os.mkdir(save_path)
     imgrec = mx.recordio.MXIndexedRecordIO(os.path.join(rec_path,'train.idx'), os.path.join(rec_path,'train.rec'), 'r')
     img_info = imgrec.read_idx(0)
     header,_ = mx.recordio.unpack(img_info)
@@ -95,32 +98,6 @@ def load_mx_rec(rec_path):
         label = int(header.label)
         img = Image.fromarray(img)
         label_path = os.path.join(save_path,str(label))
-        if not label_path.exists():
-            label_path.mkdir()
+        if not os.path.exists(label_path):
+            os.mkdir(label_path)
         img.save(os.path.join(label_path,'{}.jpg'.format(idx)), quality=95)
-
-# class train_dataset(Dataset):
-#     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
-#         self.imgs = bcolz.carray(rootdir = imgs_bcolz)
-#         self.labels = bcolz.carray(rootdir = label_bcolz)
-#         self.h_flip = h_flip
-#         self.length = len(self.imgs) - 1
-#         if h_flip:
-#             self.transform = trans.Compose([
-#                 trans.ToPILImage(),
-#                 trans.RandomHorizontalFlip(),
-#                 trans.ToTensor(),
-#                 trans.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
-#             ])
-#         self.class_num = self.labels[-1] + 1
-
-#     def __len__(self):
-#         return self.length
-
-#     def __getitem__(self, index):
-#         img = torch.tensor(self.imgs[index+1], dtype=torch.float)
-#         label = torch.tensor(self.labels[index+1], dtype=torch.long)
-#         if self.h_flip:
-#             img = de_preprocess(img)
-#             img = self.transform(img)
-#         return img, label

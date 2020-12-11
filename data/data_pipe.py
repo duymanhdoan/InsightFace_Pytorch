@@ -62,6 +62,7 @@ def load_bin(path, rootdir, transform, image_size=[112,112]):
         print('->>>>>>>>>>>>>>>>> ',_bin)
         img = mx.image.imdecode(_bin).asnumpy()
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        print(' pring image: ', img)
         img = Image.fromarray(img.astype(np.uint8))
         data[i, ...] = transform(img)
         i += 1

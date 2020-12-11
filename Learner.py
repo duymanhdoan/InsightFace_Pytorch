@@ -13,6 +13,7 @@ from PIL import Image
 from torchvision import transforms as trans
 import math
 import bcolz
+import os
 
 class face_learner(object):
     def __init__(self, conf, inference=False):
@@ -64,25 +65,25 @@ class face_learner(object):
         else:
             save_path = conf.model_path
         torch.save(
-            self.model.state_dict(), save_path /
-            ('model_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
+            self.model.state_dict(), os.path.join(save_path,('model_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
+            )
         if not model_only:
             torch.save(
-                self.head.state_dict(), save_path /
-                ('head_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
+                self.head.state_dict(), os.path.join(save_path,('head_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
+                )
             torch.save(
-                self.optimizer.state_dict(), save_path /
-                ('optimizer_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
+                self.optimizer.state_dict(), os.path.join(save_path,('optimizer_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
+                )
 
     def load_state(self, conf, fixed_str, from_save_folder=False, model_only=False):
         if from_save_folder:
             save_path = conf.save_path
         else:
             save_path = conf.model_path
-        self.model.load_state_dict(torch.load(save_path/'model_{}'.format(fixed_str)))
+        self.model.load_state_dict(torch.load(os.path.join(save_path,'model_{}'.format(fixed_str))))
         if not model_only:
-            self.head.load_state_dict(torch.load(save_path/'head_{}'.format(fixed_str)))
-            self.optimizer.load_state_dict(torch.load(save_path/'optimizer_{}'.format(fixed_str)))
+            self.head.load_state_dict(torch.load(os.path.join(save_path,'head_{}'.format(fixed_str))))
+            self.optimizer.load_state_dict(torch.load(os.path.join(save_path,'optimizer_{}'.format(fixed_str))))
 
     def board_val(self, db_name, accuracy, best_threshold, roc_curve_tensor):
         self.writer.add_scalar('{}_accuracy'.format(db_name), accuracy, self.step)

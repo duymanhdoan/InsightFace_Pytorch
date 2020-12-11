@@ -25,6 +25,10 @@ out_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'
 root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'
  # save all folder status of models training
 
+<<<<<<< HEAD
 # mxnet==1.7.0.post1 support for load_bin functions.
 # mxnet-cu101==1.7.0
 # mxnet-cu92==1.7.0
+=======
+#only  mxnet==1.7.0.post1 support for both of load_bin and load_mx_rec functions .  
+>>>>>>> 5d24e0269f0428d5308653a1989c2a6b2cc37f39

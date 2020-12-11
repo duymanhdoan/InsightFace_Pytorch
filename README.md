@@ -66,6 +66,9 @@ download the refined dataset: (emore recommended)
 **Note:** If you use the refined [MS1M](https://arxiv.org/abs/1607.08221) dataset and the cropped [VGG2](https://arxiv.org/abs/1710.08092) dataset, please cite the original papers.
 
 - after unzip the files to 'data' path, run :
+```
+pip install mxnet==1.7.0.post1
+```
 
   ```
   python prepare_data.py
@@ -124,7 +127,7 @@ faces_emore/
 - 4 to start
 
   ```
-  python face_verify.py 
+  python face_verify.py
   ```
 
 - - -
@@ -151,7 +154,7 @@ python train.py -b [batch_size] -lr [learning rate] -e [epochs]
 ​```
 ```
 
-## 4. References 
+## 4. References
 
 - This repo is mainly inspired by [deepinsight/insightface](https://github.com/deepinsight/insightface) and [InsightFace_TF](https://github.com/auroua/InsightFace_TF)
 

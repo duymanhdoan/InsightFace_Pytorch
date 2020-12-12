@@ -14,6 +14,7 @@ from torchvision import transforms as trans
 import math
 import bcolz
 import os
+import args
 
 class face_learner(object):
     def __init__(self, conf, inference=False):
@@ -55,9 +56,9 @@ class face_learner(object):
             self.board_loss_every = len(self.loader)//100
             self.evaluate_every = len(self.loader)//10
             self.save_every = len(self.loader)//5
-            print('paths loader all data set {}'.format(self.loader.dataset.root))
-
-            self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(self.loader.dataset.root)
+            rootdir = os.path.join(args.root_dir,args.rec_path)
+            print('loader paths of validation dataset {}'.format(rootdir))
+            self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(rootdir)
         else:
             self.threshold = conf.threshold
 

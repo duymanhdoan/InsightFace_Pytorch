@@ -11,7 +11,7 @@ def get_config(training = True):
 
     conf = edict()
     conf.data_path = args.root_dir
-    conf.work_path = 'work_space'
+    conf.work_path = 'history_models/work_space'
     conf.model_path = os.path.join(conf.work_path,'models')
     conf.log_path   = os.path.join(conf.work_path,'log')
     conf.save_path  = os.path.join(conf.work_path,'save')
@@ -26,7 +26,7 @@ def get_config(training = True):
                     trans.ToTensor(),
                     trans.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
                 ])
-    conf.data_mode = 'ms1m'
+    conf.data_mode = 'emore'
     conf.vgg_folder = os.path.join(conf.data_path,'faces_vgg_112x112')
     conf.ms1m_folder = os.path.join(conf.data_path,'faces_ms1m_112x112')
     conf.emore_folder = os.path.join(conf.data_path,'faces_emore')
@@ -36,7 +36,7 @@ def get_config(training = True):
     if training:
         conf.log_path = os.path.join(conf.work_path,'log')
         conf.save_path = os.path.join(conf.work_path,'save')
-    #     conf.weight_decay = 5e-4
+        conf.weight_decay = 5e-4
         conf.lr = 1e-3
         conf.milestones = [12,15,18]
         conf.momentum = 0.9

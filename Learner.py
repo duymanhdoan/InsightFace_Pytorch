@@ -55,7 +55,9 @@ class face_learner(object):
             self.board_loss_every = len(self.loader)//100
             self.evaluate_every = len(self.loader)//10
             self.save_every = len(self.loader)//5
-            self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(self.loader.dataset.root.parent)
+            print('paths loader all data set {}'.format(self.loader.dataset.root))
+
+            self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(self.loader.dataset.root)
         else:
             self.threshold = conf.threshold
 

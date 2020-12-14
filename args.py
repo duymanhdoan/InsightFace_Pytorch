@@ -14,7 +14,7 @@ num_workers = 4
 data_mode = 'ms1m'
 # data root_dir paths
 rec_path ='faces_emore'
-model_save_interval = 2
+model_save_interval = 1
 load_pretrained_paths = ''
 
 # paths in local

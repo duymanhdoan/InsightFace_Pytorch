@@ -29,10 +29,10 @@ def get_train_dataset(imgs_folder):
 
 def get_train_loader(conf):
     if conf.data_mode in ['ms1m', 'concat']:
-        ms1m_ds, ms1m_class_num = get_train_dataset(conf.ms1m_folder/'imgs')
+        ms1m_ds, ms1m_class_num = get_train_dataset(conf.ms1m_folder)
         print('ms1m loader generated')
     if conf.data_mode in ['vgg', 'concat']:
-        vgg_ds, vgg_class_num = get_train_dataset(conf.vgg_folder/'imgs')
+        vgg_ds, vgg_class_num = get_train_dataset(conf.vgg_folder)
         print('vgg loader generated')
     if conf.data_mode == 'vgg':
         ds = vgg_ds
@@ -46,7 +46,7 @@ def get_train_loader(conf):
         ds = ConcatDataset([ms1m_ds,vgg_ds])
         class_num = vgg_class_num + ms1m_class_num
     elif conf.data_mode == 'emore':
-        ds, class_num = get_train_dataset(conf.emore_folder/'imgs')
+        ds, class_num = get_train_dataset(conf.emore_folder)
     loader = DataLoader(ds, batch_size=conf.batch_size, shuffle=True, pin_memory=conf.pin_memory, num_workers=conf.num_workers)
     return loader, class_num
 

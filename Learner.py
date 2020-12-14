@@ -53,9 +53,10 @@ class face_learner(object):
 #             self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, patience=40, verbose=True)
 
             print('optimizers generated')
-            self.board_loss_every = len(self.loader)//100
-            self.evaluate_every = len(self.loader)//10
-            self.save_every = len(self.loader)//5
+            self.board_loss_every = len(self.loader)//10
+            self.evaluate_every = len(self.loader)//1
+            self.save_every = len(self.loader)//1
+            print('board loss every: {} -> evaluate_every: {} -> save_every: {} \n'.format(len(self.loader)//100,len(self.loader)//10,len(self.loader)//5))
             rootdir = os.path.join(args.root_dir,args.rec_path)
             print('loader paths of validation dataset {}'.format(rootdir))
             self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(rootdir)

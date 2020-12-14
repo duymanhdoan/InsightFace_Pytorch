@@ -7,9 +7,9 @@ net_depth = 50
 # number of layer
 lr = 1e-3
 # learning rategit
-batch_size = 32
+batch_size = 64
 # batchsize
-num_workers = 3
+num_workers = 4
 # num workers
 data_mode = 'ms1m'
 # data root_dir paths

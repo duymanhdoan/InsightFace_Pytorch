@@ -29,12 +29,11 @@ def get_train_dataset(imgs_folder):
 
 def get_train_loader(conf):
     if conf.data_mode in ['ms1m', 'concat']:
-        ms1m_ds, ms1m_class_num = get_train_dataset(conf.ms1m_folder)
+        ms1m_ds, ms1m_class_num = get_train_dataset(conf.ms1m_folder/'imgs')
         print('ms1m loader generated')
     if conf.data_mode in ['vgg', 'concat']:
-        vgg_ds, vgg_class_num = get_train_dataset(conf.vgg_folder)
+        vgg_ds, vgg_class_num = get_train_dataset(conf.vgg_folder/'imgs')
         print('vgg loader generated')
-
     if conf.data_mode == 'vgg':
         ds = vgg_ds
         class_num = vgg_class_num
@@ -47,9 +46,10 @@ def get_train_loader(conf):
         ds = ConcatDataset([ms1m_ds,vgg_ds])
         class_num = vgg_class_num + ms1m_class_num
     elif conf.data_mode == 'emore':
-        ds, class_num = get_train_dataset(conf.emore_folder)
+        ds, class_num = get_train_dataset(conf.emore_folder/'imgs')
     loader = DataLoader(ds, batch_size=conf.batch_size, shuffle=True, pin_memory=conf.pin_memory, num_workers=conf.num_workers)
     return loader, class_num
+
 
 def load_bin(path, rootdir, transform, image_size=[112,112]):
 
@@ -61,10 +61,6 @@ def load_bin(path, rootdir, transform, image_size=[112,112]):
 
     for i in range(len(bins)):
         _bin = bins[i]
-#<<<<<<< HEAD
-#        print('->>>>>>>>>>>>>>>>> ',_bin)
-#=======
-#>>>>>>> c158181b0b69c3ce01a62896be13c39dd1e5692e
         img = mx.image.imdecode(_bin).asnumpy()
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         img = Image.fromarray(img.astype(np.uint8))
@@ -90,7 +86,7 @@ def load_mx_rec(rec_path):
     save_path = os.path.join(rec_path,'imgs')
     if not os.path.exists(save_path):
         os.mkdir(save_path)
-    imgrec = mx.recordio.MXIndexedRecordIO(os.path.join(rec_path,'train.idx'), os.path.join(rec_path,'train.rec'), 'r')
+    imgrec = mx.recordio.MXIndexedRecordIO(str(rec_path/'train.idx'), str(rec_path/'train.rec'), 'r')
     img_info = imgrec.read_idx(0)
     header,_ = mx.recordio.unpack(img_info)
     max_idx = int(header.label[0])
@@ -102,4 +98,4 @@ def load_mx_rec(rec_path):
         label_path = os.path.join(save_path,str(label))
         if not os.path.exists(label_path):
             os.mkdir(label_path)
-        img.save(os.path.join(label_path,'{}.jpg'.format(idx)), quality=95)
+        img.save(label_path/'{}.jpg'.format(idx), quality=95)

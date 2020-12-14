@@ -14,6 +14,8 @@ num_workers = 3
 data_mode = 'ms1m'
 # data root_dir paths
 rec_path ='faces_emore'
+model_save_interval = 2
+load_pretrained_paths = ''
 
 # paths in local
 #root_dir = '/home/minglee/Documents/aiProjects/generator_datav2'

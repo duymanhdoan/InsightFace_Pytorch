@@ -3,18 +3,16 @@ from pathlib import Path
 import torch
 from torch.nn import CrossEntropyLoss
 from torchvision import transforms as trans
-import os
 import args
 
 
 def get_config(training = True):
-
     conf = edict()
-    conf.data_path = args.root_dir
-    conf.work_path = 'history_models/work_space'
-    conf.model_path = os.path.join(conf.work_path,'models')
-    conf.log_path   = os.path.join(conf.work_path,'log')
-    conf.save_path  = os.path.join(conf.work_path,'save')
+    conf.data_path = Path('data')
+    conf.work_path = Path('history_models/work_space/')
+    conf.model_path = conf.work_path/'models'
+    conf.log_path = conf.work_path/'log'
+    conf.save_path = conf.work_path/'save'
     conf.input_size = [112,112]
     conf.embedding_size = 512
     conf.use_mobilfacenet = False
@@ -26,17 +24,18 @@ def get_config(training = True):
                     trans.ToTensor(),
                     trans.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
                 ])
+
     conf.data_mode = 'emore'
-    conf.vgg_folder = os.path.join(conf.data_path,'faces_vgg_112x112')
-    conf.ms1m_folder = os.path.join(conf.data_path,'faces_ms1m_112x112')
-    conf.emore_folder = os.path.join(conf.data_path,'faces_emore')
+    conf.vgg_folder = conf.data_path/'faces_vgg_112x112'
+    conf.ms1m_folder = conf.data_path/'faces_ms1m_112x112'
+    conf.emore_folder = conf.data_path/'faces_emore'
     conf.batch_size = 100 # irse net depth 50
 #   conf.batch_size = 200 # mobilefacenet
 #--------------------Training Config ------------------------
     if training:
-        conf.log_path = os.path.join(conf.work_path,'log')
-        conf.save_path = os.path.join(conf.work_path,'save')
-        conf.weight_decay = 5e-4
+        conf.log_path = conf.work_path/'log'
+        conf.save_path = conf.work_path/'save'
+    #     conf.weight_decay = 5e-4
         conf.lr = 1e-3
         conf.milestones = [12,15,18]
         conf.momentum = 0.9
@@ -46,7 +45,7 @@ def get_config(training = True):
         conf.ce_loss = CrossEntropyLoss()
 #--------------------Inference Config ------------------------
     else:
-        conf.facebank_path = os.path.join(conf.data_path,'facebank')
+        conf.facebank_path = conf.data_path/'facebank'
         conf.threshold = 1.5
         conf.face_limit = 10
         #when inference, at maximum detect 10 faces in one image, my laptop is slow

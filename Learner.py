@@ -58,6 +58,11 @@ class face_learner(object):
             self.save_every = len(self.loader)//1
             print('board loss every: {} -> evaluate_every: {} -> save_every: {} \n'.format(len(self.loader)//100,len(self.loader)//10,len(self.loader)//5))
             rootdir = os.path.join(args.root_dir,args.rec_path)
+            self.board_loss_every = len(self.loader)// 100
+            self.evaluate_every = len(self.loader)// 10
+            # self.save_every = len(self.loader)//len(self.loader)   # 5
+            print('board loss every: {} -> evaluate_every: {} \n'.format(self.board_loss_every,self.evaluate_every))
+            rootdir = conf.data_path/args.rec_path
             print('loader paths of validation dataset {}'.format(rootdir))
             self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(rootdir)
         else:
@@ -68,26 +73,34 @@ class face_learner(object):
             save_path = conf.save_path
         else:
             save_path = conf.model_path
+
+        print('create paths of save state: status: {} -> paths: {}'.format(save_path.exists(),save_path))
+        if not save_path.exists():
+            save_path.mkdir()
+
         torch.save(
-            self.model.state_dict(), os.path.join(save_path,('model_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
-            )
-        if not model_only:
-            torch.save(
-                self.head.state_dict(), os.path.join(save_path,('head_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
-                )
-            torch.save(
-                self.optimizer.state_dict(), os.path.join(save_path,('optimizer_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
-                )
+            self.model.state_dict(), save_path /('{}_{}_accuracy_{}_final_opochs_{}.pth'.format(conf.net_mode, conf.net_depth, accuracy, extra)))
+        # if not model_only:
+        #     torch.save(
+        #         self.head.state_dict(), save_path /
+        #         ('head_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
+        #     torch.save(
+        #         self.optimizer.state_dict(), save_path /
+        #         ('optimizer_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
 
     def load_state(self, conf, fixed_str, from_save_folder=False, model_only=False):
         if from_save_folder:
             save_path = conf.save_path
         else:
             save_path = conf.model_path
-        self.model.load_state_dict(torch.load(os.path.join(save_path,'model_{}'.format(fixed_str))))
-        if not model_only:
-            self.head.load_state_dict(torch.load(os.path.join(save_path,'head_{}'.format(fixed_str))))
-            self.optimizer.load_state_dict(torch.load(os.path.join(save_path,'optimizer_{}'.format(fixed_str))))
+        print('create load sate from model status: {} -> paths: {}'.format(save_path.exists(),save_path))
+        if not save_path.exists():
+            save_path.mkdir()
+
+        self.model.load_state_dict(torch.load(save_path/args.load_pretrained_paths ))
+        # if not model_only:
+        #     self.head.load_state_dict(torch.load(save_path/'head_{}'.format(fixed_str)))
+        #     self.optimizer.load_state_dict(torch.load(save_path/'optimizer_{}'.format(fixed_str)))
 
     def board_val(self, db_name, accuracy, best_threshold, roc_curve_tensor):
         self.writer.add_scalar('{}_accuracy'.format(db_name), accuracy, self.step)
@@ -197,6 +210,7 @@ class face_learner(object):
                 self.schedule_lr()
             if e == self.milestones[2]:
                 self.schedule_lr()
+            acc = 0.0
             for imgs, labels in tqdm(iter(self.loader)):
                 imgs = imgs.to(conf.device)
                 labels = labels.to(conf.device)
@@ -214,6 +228,7 @@ class face_learner(object):
                     running_loss = 0.
 
                 if self.step % self.evaluate_every == 0 and self.step != 0:
+                    print('run')
                     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.agedb_30, self.agedb_30_issame)
                     self.board_val('agedb_30', accuracy, best_threshold, roc_curve_tensor)
                     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.lfw, self.lfw_issame)
@@ -221,12 +236,13 @@ class face_learner(object):
                     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.cfp_fp, self.cfp_fp_issame)
                     self.board_val('cfp_fp', accuracy, best_threshold, roc_curve_tensor)
                     self.model.train()
-                if self.step % self.save_every == 0 and self.step != 0:
-                    self.save_state(conf, accuracy)
+                    # save accuracy of every opochs
+                    acc = accuracy
+                self.step += 1  # step of every opochs by len(self.loader) is sum of step
 
-                self.step += 1
-
-        self.save_state(conf, accuracy, to_save_folder=True, extra='final')
+            if e % args.model_save_interval == 0 and args.model_save_interval!=0 :
+                print('saving model by epochs {} -> interator_of_save: {} '.format(e,args.model_save_interval))
+                self.save_state(conf, acc, extra= '{}'.format(e))
 
     def schedule_lr(self):
         for params in self.optimizer.param_groups:

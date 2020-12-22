@@ -53,7 +53,13 @@ class face_learner(object):
 #             self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, patience=40, verbose=True)
 
             print('optimizers generated')
+<<<<<<< HEAD
             self.board_loss_every = len(self.loader)// 100
+=======
+          
+            rootdir = os.path.join(args.root_dir,args.rec_path)
+            self.board_loss_every = len(self.loader)// 6000
+>>>>>>> c1c619bb109a1cc53084a23bb4f4aa5d5dae03be
             self.evaluate_every = len(self.loader)// 2
             # self.save_every = len(self.loader)//len(self.loader)   # 5
             print('board loss every: {} -> evaluate_every: {} \n'.format(self.board_loss_every,self.evaluate_every))

@@ -5,6 +5,7 @@ from PIL import Image
 import numpy as np
 from .box_utils import nms, _preprocess
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+import args
 # device = 'cpu'
 
 def run_first_stage(image, net, scale, threshold):
@@ -67,7 +68,9 @@ def _generate_bboxes(probs, offsets, scale, threshold):
     cell_size = 12
 
     # indices of boxes where there is probably a face
-    inds = np.where(probs > threshold)
+    # print(threshold)
+    # print(probs)
+    inds = np.where(probs > args.th)
 
     if inds[0].size == 0:
         return np.array([])

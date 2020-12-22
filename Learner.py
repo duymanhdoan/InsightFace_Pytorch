@@ -54,7 +54,7 @@ class face_learner(object):
 
             print('optimizers generated')
             self.board_loss_every = len(self.loader)// 100
-            self.evaluate_every = len(self.loader)// 10
+            self.evaluate_every = len(self.loader)// 2
             # self.save_every = len(self.loader)//len(self.loader)   # 5
             print('board loss every: {} -> evaluate_every: {} \n'.format(self.board_loss_every,self.evaluate_every))
             rootdir = conf.data_path/args.rec_path
@@ -83,16 +83,19 @@ class face_learner(object):
         #         self.optimizer.state_dict(), save_path /
         #         ('optimizer_{}_accuracy:{}_step:{}_{}.pth'.format(get_time(), accuracy, self.step, extra)))
 
-    def load_state(self, conf, fixed_str, from_save_folder=False, model_only=False):
+    def load_state(self, conf, from_save_folder=False, model_only=False):
         if from_save_folder:
             save_path = conf.save_path
         else:
             save_path = conf.model_path
-        print('create load sate from model status: {} -> paths: {}'.format(save_path.exists(),save_path))
-        if not save_path.exists():
-            save_path.mkdir()
 
-        self.model.load_state_dict(torch.load(save_path/args.load_pretrained_paths ))
+        if not save_path.exists():
+            print('create load sate from model status: {} -> paths: {}'.format(save_path.exists(),save_path))
+            save_path.mkdir()
+        path = save_path/args.load_pretrained_paths
+        if path.exists():
+            print('load models from status paths: {} -> status: {}'.format(path,path.exists()))
+            self.model.load_state_dict(torch.load(save_path/args.load_pretrained_paths,map_location= conf.device ))
         # if not model_only:
         #     self.head.load_state_dict(torch.load(save_path/'head_{}'.format(fixed_str)))
         #     self.optimizer.load_state_dict(torch.load(save_path/'optimizer_{}'.format(fixed_str)))
@@ -195,7 +198,9 @@ class face_learner(object):
                 return log_lrs, losses
 
     def train(self, conf, epochs):
+
         self.model.train()
+        self.load_state(conf,from_save_folder = True)
         running_loss = 0.
         for e in range(epochs):
             print('epoch {} started'.format(e))
@@ -264,6 +269,8 @@ class face_learner(object):
 
         diff = source_embs.unsqueeze(-1) - target_embs.transpose(1,0).unsqueeze(0)
         dist = torch.sum(torch.pow(diff, 2), dim=1)
+        print("distance: {}".format(dist))
         minimum, min_idx = torch.min(dist, dim=1)
+        # print(minimum)
         min_idx[minimum > self.threshold] = -1 # if no match, set idx to -1
         return min_idx, minimum

@@ -18,13 +18,13 @@ class MTCNN():
         self.rnet.eval()
         self.onet.eval()
         self.refrence = get_reference_facial_points(default_square= True)
-        
+
     def align(self, img):
         _, landmarks = self.detect_faces(img)
         facial5points = [[landmarks[0][j],landmarks[0][j+5]] for j in range(5)]
         warped_face = warp_and_crop_face(np.array(img), facial5points, self.refrence, crop_size=(112,112))
         return Image.fromarray(warped_face)
-    
+
     def align_multi(self, img, limit=None, min_face_size=30.0):
         boxes, landmarks = self.detect_faces(img, min_face_size)
         if limit:
@@ -83,10 +83,12 @@ class MTCNN():
             # run P-Net on different scales
             for s in scales:
                 boxes = run_first_stage(image, self.pnet, scale=s, threshold=thresholds[0])
+                # print("boxes in state_1 {}".format(boxes))
                 bounding_boxes.append(boxes)
 
             # collect boxes (and offsets, and scores) from different scales
             bounding_boxes = [i for i in bounding_boxes if i is not None]
+            # print("check status: {}".format(bounding_boxes))
             bounding_boxes = np.vstack(bounding_boxes)
 
             keep = nms(bounding_boxes[:, 0:5], nms_thresholds[0])
@@ -118,11 +120,11 @@ class MTCNN():
             bounding_boxes = calibrate_box(bounding_boxes, offsets[keep])
             bounding_boxes = convert_to_square(bounding_boxes)
             bounding_boxes[:, 0:4] = np.round(bounding_boxes[:, 0:4])
-
+            # print("boxes in state_2 {}".format(bounding_boxes))
             # STAGE 3
 
             img_boxes = get_image_boxes(bounding_boxes, image, size=48)
-            if len(img_boxes) == 0: 
+            if len(img_boxes) == 0:
                 return [], []
             img_boxes = torch.FloatTensor(img_boxes).to(device)
             output = self.onet(img_boxes)
@@ -147,5 +149,5 @@ class MTCNN():
             keep = nms(bounding_boxes, nms_thresholds[2], mode='min')
             bounding_boxes = bounding_boxes[keep]
             landmarks = landmarks[keep]
-
+            # print("boxes in state_3 {}".format(bounding_boxes))
         return bounding_boxes, landmarks

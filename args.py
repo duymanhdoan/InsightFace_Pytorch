@@ -15,11 +15,21 @@ data_mode = 'ms1m'
 # data root_dir paths
 rec_path ='faces_emore'
 model_save_interval = 2
-load_pretrained_paths = ''
+load_pretrained_paths = 'model_ir_se50.pth'
+save = True
+threshold = 1.0
+update = True
+tta = True
+score = True
+file_name = 'Sherlock.avi'
+save_name = 'recording'
+begin = 1
+duration = 0
+th = 0.1  #threshold of probility pnet mtcnn 
 
 # paths in local
-#root_dir = '/home/minglee/Documents/aiProjects/generator_datav2'
-#out_dir  = '/home/minglee/Documents/aiProjects/generator_datav2'
+# root_dir = '/home/minglee/Documents/aiProjects/git_clone/InsightFace_Pytorch'
+# out_dir  = '/home/minglee/Documents/aiProjects/generator_datav2'
 
 # paths in sever
 out_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'  #paths load data bin file and read in folder faces_emore

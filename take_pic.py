@@ -35,7 +35,7 @@ while cap.isOpened():
     # 实时的将采集到的数据显示到界面上
     if isSuccess:
         frame_text = cv2.putText(frame,
-                    '. press t for take pickture, q for quite.',
+                    '',
                     (10,100),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     2,

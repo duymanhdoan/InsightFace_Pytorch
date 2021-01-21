@@ -9,10 +9,10 @@ import args
 def get_config(training = True):
     conf = edict()
     conf.data_path = Path(args.root_dir)
-    conf.work_path = Path('history_models/work_space/')
-    conf.model_path = conf.work_path/'models'
-    conf.log_path = conf.work_path/'log'
-    conf.save_path = conf.work_path/'save'
+    conf.work_path = Path(args.out_dir)
+    conf.model_path = conf.work_path/'history_models/models'
+    conf.log_path = conf.work_path/'history_models/log'
+    conf.save_path = conf.work_path/'history_models/save'
     conf.input_size = [112,112]
     conf.embedding_size = 512
     conf.use_mobilfacenet = False
@@ -33,8 +33,8 @@ def get_config(training = True):
 #   conf.batch_size = 200 # mobilefacenet
 #--------------------Training Config ------------------------
     if training:
-        conf.log_path = conf.work_path/'log'
-        conf.save_path = conf.work_path/'save'
+        conf.log_path = conf.work_path/'history_models/log'
+        conf.save_path = conf.work_path/'history_models/save'
     #     conf.weight_decay = 5e-4
         conf.lr = 1e-3
         conf.milestones = [12,15,18]

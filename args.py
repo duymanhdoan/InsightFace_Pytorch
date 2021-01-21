@@ -1,7 +1,7 @@
 
-epochs = 10
+epochs = 50
 #epochs
-net_mode = 'ir'
+net_mode = 'ir_se'
 #network
 net_depth = 50
 # number of layer
@@ -14,11 +14,12 @@ num_workers = 4
 data_mode = 'ms1m'
 # data root_dir paths
 rec_path ='faces_emore'
-model_save_interval = 2
-load_pretrained_paths = 'model_ir_se50.pth'
+# save model of number epochs
+model_save_interval = 1
+pretrain_paths = 'model_ir_se50.pth'
 save = True
 threshold = 1.0
-update = True
+update = False
 tta = True
 score = True
 file_name = 'Sherlock.avi'
@@ -28,13 +29,13 @@ duration = 0
 th = 0.1  #threshold of probility pnet mtcnn
 
 # paths in local
-# root_dir = '/home/minglee/Documents/aiProjects/git_clone/InsightFace_Pytorch'
-# out_dir  = '/home/minglee/Documents/aiProjects/generator_datav2'
+root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'
+out_dir  = '/mnt/DATA/duydmFabbi/dataFace/trained-face-mask'
 model_save_interval = 1
 load_pretrained_paths = ''
 
 
 
 # paths in sever
-out_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'  #paths load data bin file and read in folder faces_emore
-root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2' # save all folder status of models training
+# out_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'  #paths load data bin file and read in folder faces_emore
+# root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2' # save all folder status of models training

@@ -18,7 +18,6 @@ import args
 
 class face_learner(object):
     def __init__(self, conf, inference=False):
-        print(conf)
         if conf.use_mobilfacenet:
             self.model = MobileFaceNet(conf.embedding_size).to(conf.device)
             print('MobileFaceNet model generated')
@@ -52,18 +51,11 @@ class face_learner(object):
             print(self.optimizer)
 #             self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, patience=40, verbose=True)
 
-            print('optimizers generated')
-<<<<<<< HEAD
-            self.board_loss_every = len(self.loader)// 100
-=======
-          
             rootdir = os.path.join(args.root_dir,args.rec_path)
             self.board_loss_every = len(self.loader)// 6000
->>>>>>> c1c619bb109a1cc53084a23bb4f4aa5d5dae03be
-            self.evaluate_every = len(self.loader)// 2
+            self.evaluate_every = len(self.loader)// 1
             # self.save_every = len(self.loader)//len(self.loader)   # 5
             print('board loss every: {} -> evaluate_every: {} \n'.format(self.board_loss_every,self.evaluate_every))
-            rootdir = conf.data_path/args.rec_path
             print('loader paths of validation dataset {}'.format(rootdir))
             self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(rootdir)
         else:
@@ -98,10 +90,10 @@ class face_learner(object):
         if not save_path.exists():
             print('create load sate from model status: {} -> paths: {}'.format(save_path.exists(),save_path))
             save_path.mkdir()
-        path = save_path/args.load_pretrained_paths
+        path = save_path/args.pretrain_paths
         if path.exists():
             print('load models from status paths: {} -> status: {}'.format(path,path.exists()))
-            self.model.load_state_dict(torch.load(save_path/args.load_pretrained_paths,map_location= conf.device ))
+            self.model.load_state_dict(torch.load(path,map_location= conf.device ))
         # if not model_only:
         #     self.head.load_state_dict(torch.load(save_path/'head_{}'.format(fixed_str)))
         #     self.optimizer.load_state_dict(torch.load(save_path/'optimizer_{}'.format(fixed_str)))

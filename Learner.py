@@ -52,7 +52,7 @@ class face_learner(object):
 #             self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, patience=40, verbose=True)
 
             rootdir = os.path.join(args.root_dir,args.rec_path)
-            self.board_loss_every = len(self.loader)// 6000
+            self.board_loss_every = len(self.loader)// len(self.loader)
             self.evaluate_every = len(self.loader)// 1
             # self.save_every = len(self.loader)//len(self.loader)   # 5
             print('board loss every: {} -> evaluate_every: {} \n'.format(self.board_loss_every,self.evaluate_every))
@@ -61,7 +61,7 @@ class face_learner(object):
         else:
             self.threshold = conf.threshold
 
-    def save_state(self, conf, accuracy, to_save_folder=False, extra=None, model_only=False):
+    def save_state(self, conf,to_save_folder=False, extra=None, model_only=False):
         if to_save_folder:
             save_path = conf.save_path
         else:
@@ -72,7 +72,7 @@ class face_learner(object):
             save_path.mkdir()
 
         torch.save(
-            self.model.state_dict(), save_path /('{}_{}_accuracy_{}_final_opochs_{}.pth'.format(conf.net_mode, conf.net_depth, accuracy, extra)))
+            self.model.state_dict(), save_path /('{}_{}_opochs_{}.pth'.format(conf.net_mode, conf.net_depth, extra)))
         # if not model_only:
         #     torch.save(
         #         self.head.state_dict(), save_path /
@@ -225,8 +225,8 @@ class face_learner(object):
                     self.writer.add_scalar('train_loss', loss_board, self.step)
                     running_loss = 0.
 
-                if self.step % self.evaluate_every == 0 and self.step != 0:
-                    print('run')
+                #if self.step % self.evaluate_every == 0 and self.step != 0:
+                if 1==0:
                     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.agedb_30, self.agedb_30_issame)
                     self.board_val('agedb_30', accuracy, best_threshold, roc_curve_tensor)
                     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.lfw, self.lfw_issame)
@@ -239,8 +239,8 @@ class face_learner(object):
                 self.step += 1  # step of every opochs by len(self.loader) is sum of step
 
             if e % args.model_save_interval == 0 and args.model_save_interval!=0 :
-                print('saving model by epochs {} -> interator_of_save: {} '.format(e,args.model_save_interval))
-                self.save_state(conf, acc, extra= '{}'.format(e))
+                print('saving model by epochs {} -> paths_of_save: {} '.format(e,args.model_path))
+                self.save_state(conf, extra= '{}'.format(e))
 
     def schedule_lr(self):
         for params in self.optimizer.param_groups:

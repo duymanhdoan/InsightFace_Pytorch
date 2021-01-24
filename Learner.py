@@ -238,8 +238,8 @@ class face_learner(object):
                     acc = accuracy
                 self.step += 1  # step of every opochs by len(self.loader) is sum of step
 
-            if e % args.model_save_interval == 0 and args.model_save_interval!=0 :
-                print('saving model by epochs {} -> paths_of_save: {} '.format(e,args.model_path))
+            if e % args.model_save_interval == 0 and args.model_save_interval!=0:
+                print('saving model by epochs {} -> paths_of_save: {} '.format(e,conf.model_path))
                 self.save_state(conf, extra= '{}'.format(e))
 
     def schedule_lr(self):

@@ -1,5 +1,5 @@
 
-epochs = 50
+epochs = 300
 #epochs
 net_mode = 'ir_se'
 #network

@@ -154,17 +154,21 @@ def caculate_distance_image(root_folder,parse_text_file):
         with open(parse_text_file,"w") as fs: 
             fs.write('\n CLASS: {} \n'.format(root_folder.split('/')[-1]))
             for i in range(1,len(embedding),1):  
-                embs1 = embedding[0]
-                embs2 = embedding[i]
-                _, score = distance(embs1, embs2)
-                line = 'distance image:{} -> image:{} is:{:.4f} \n'.format(names[0],names[i],score[0])
-                fs.write(line)
-            
-            for i in range(2,len(embedding)):      
-                _, score = distance(embedding[1],embedding[i])
-                line = 'distance image:{} -> image:{} is:{:.4f} \n'.format(names[1],names[i],score[0])
-                fs.write(line)
-                
+                try:
+                    embs1 = embedding[0]
+                    embs2 = embedding[i]
+                    _, score = distance(embs1, embs2)
+                    line = 'distance image:{} -> image:{} is:{:.4f} \n'.format(names[0],names[i],score[0])
+                    fs.write(line)
+                except: 
+                    continue
+            for i in range(2,len(embedding)):
+                try:      
+                    _, score = distance(embedding[1],embedding[i])
+                    line = 'distance image:{} -> image:{} is:{:.4f} \n'.format(names[1],names[i],score[0])
+                    fs.write(line)
+                except: 
+                    continue
 
 if __name__ == '__main__':
 

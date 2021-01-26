@@ -17,7 +17,7 @@ import args
 import os 
 from multiprocessing import Pool
 import tqdm 
-
+# import configure
 
 def extract_folder_image(path, conf, model, mtcnn, tta = True):
     model.eval()
@@ -30,8 +30,8 @@ def extract_folder_image(path, conf, model, mtcnn, tta = True):
         else:
             try:
                 img = Image.open(file)
-                if img.size != (112, 112):
-                    img = mtcnn.align(img)
+                # if img.size != (112, 112):
+                #     img = mtcnn.align(img)
                 with torch.no_grad():
                     if tta:
                         mirror = trans.functional.hflip(img)
@@ -58,8 +58,8 @@ def extract_single_image(file,conf, model, mtcnn, tta = True):
     embs = []
     img = Image.open(file)
     try:
-        if img.size != (112, 112):
-            img = mtcnn.align(img)
+        # if img.size != (112, 112):
+        #     img = mtcnn.align(img)
         with torch.no_grad():
             if tta:
                 mirror = trans.functional.hflip(img)
@@ -172,9 +172,8 @@ def caculate_distance_image(root_folder,parse_text_file):
 
 if __name__ == '__main__':
 
-    # path_folder = '/home/minglee/Documents/aiProjects/VN-celeb/1'
-    root_text_file = '/mnt/DATA/duydmFabbi/model_train/evaluate_vn_celeb'
-    rootdir = '/mnt/DATA/duydmFabbi/dataFace/VN-CELEB-DATASET/VN-celeb'
+    root_text_file = configure.save_result_eval
+    rootdir = configure.data_eval
     
     for dirs in tqdm.tqdm(os.listdir(rootdir)):     
         path_sub_class = os.path.join(rootdir, dirs)

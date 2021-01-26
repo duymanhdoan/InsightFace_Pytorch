@@ -29,9 +29,13 @@ duration = 0
 th = 0.1  #threshold of probility pnet mtcnn
 
 # paths in local
-evaluate_dataset = '/home/minglee/Documents/aiProjects/VN-celeb'
 root_dir = '/home/minglee/Documents/aiProjects/git_clone/InsightFace_Pytorch/save_embedding'
 out_dir  = '/mnt/DATA/duydmFabbi/model_train'
+
+save_result_eval = '/mnt/DATA/duydmFabbi/model_train/vn-eval-mask'
+data_eval = '/mnt/DATA/duydmFabbi/dataFace/VN-CELEB-DATASET/mask-VN-celeb/face-with-mask-VN-celeb'
+
+
 model_save_interval = 1
 load_pretrained_paths = ''
 

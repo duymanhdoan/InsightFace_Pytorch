@@ -4,13 +4,12 @@ import torch
 from torch.nn import CrossEntropyLoss
 from torchvision import transforms as trans
 import args
-
+import configure
 
 def get_config(training = True):
     conf = edict()
-    conf.evaluate_dataset = Path(args.evaluate_dataset)
-    conf.data_path = Path(args.root_dir)
-    conf.work_path = Path(args.out_dir)
+    conf.data_path = Path(configure.root_dir)
+    conf.work_path = Path(configure.out_dir)
     conf.model_path = conf.work_path/'history_models/models'
     conf.log_path = conf.work_path/'history_models/log'
     conf.save_path = conf.work_path/'history_models/save'

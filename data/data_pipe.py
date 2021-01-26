@@ -47,6 +47,8 @@ def get_train_loader(conf):
         class_num = vgg_class_num + ms1m_class_num
     elif conf.data_mode == 'emore':        
         ds, class_num = get_train_dataset(conf.emore_folder)
+    elif conf.data_mode == 'vn_celeb': 
+        ds, class_num = get_train_loader(conf.evaluate_dataset)
     loader = DataLoader(ds, batch_size=conf.batch_size, shuffle=True, pin_memory=conf.pin_memory, num_workers=conf.num_workers)
     return loader, class_num
 

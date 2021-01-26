@@ -178,7 +178,7 @@ if __name__ == '__main__':
     
     for dirs in tqdm.tqdm(os.listdir(rootdir)):     
         path_sub_class = os.path.join(rootdir, dirs)
-        parse_text_class = 'Class:{}.txt'.format(dirs)
+        parse_text_class = 'Class_{}.txt'.format(dirs)
         caculate_distance_image(path_sub_class,os.path.join(root_text_file, parse_text_class))
 
     folder_file =  'distance_folder.txt'

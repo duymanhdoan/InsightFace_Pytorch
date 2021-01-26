@@ -8,6 +8,7 @@ import args
 
 def get_config(training = True):
     conf = edict()
+    conf.evaluate_dataset = Path(args.evaluate_dataset)
     conf.data_path = Path(args.root_dir)
     conf.work_path = Path(args.out_dir)
     conf.model_path = conf.work_path/'history_models/models'

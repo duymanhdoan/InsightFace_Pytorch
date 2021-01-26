@@ -30,9 +30,9 @@ if __name__ == '__main__':
     learner = face_learner(conf, True)
     learner.threshold = args.threshold
     if conf.device.type == 'cpu':
-        learner.load_state(conf, True, True)
+        learner.load_state(conf, False, False)
     else:
-        learner.load_state(conf, True, True)
+        learner.load_state(conf, False, False)
     learner.model.eval()
     print('learner loaded')
 

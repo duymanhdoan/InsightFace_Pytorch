@@ -16,10 +16,10 @@ data_mode = 'emore'
 rec_path ='faces_emore'
 # save model of number epochs
 model_save_interval = 1
-pretrain_paths = 'model_ir_se50.pth'
+pretrain_paths = 'ir_se_50_opochs_90.pth'
 save = True
-threshold = 1.0
-update = False
+threshold = 2.0
+update = True
 tta = True
 score = True
 file_name = 'Sherlock.avi'
@@ -29,8 +29,9 @@ duration = 0
 th = 0.1  #threshold of probility pnet mtcnn
 
 # paths in local
-root_dir = '/mnt/DATA/duydmFabbi/dataFace/generator_datav2'
-out_dir  = '/mnt/DATA/duydmFabbi/model_train'
+evaluate_dataset = '/home/minglee/Documents/aiProjects/VN-celeb'
+root_dir = '/home/minglee/Documents/aiProjects/git_clone/InsightFace_Pytorch/save_embedding'
+out_dir  = '/home/minglee/Documents/aiProjects/git_clone/InsightFace_Pytorch'
 model_save_interval = 1
 load_pretrained_paths = ''
 

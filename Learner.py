@@ -88,11 +88,11 @@ class face_learner(object):
             save_path = conf.model_path
 
         if not save_path.exists():
-            print('create load sate from model status: {} -> paths: {}'.format(save_path.exists(),save_path))
+            # print('create load sate from model status: {} -> paths: {}'.format(save_path.exists(),save_path))
             save_path.mkdir()
         path = save_path/args.pretrain_paths
         if path.exists():
-            print('load models from status paths: {} -> status: {}'.format(path,path.exists()))
+            # print('load models from status paths: {} -> status: {}'.format(path,path.exists()))
             self.model.load_state_dict(torch.load(path,map_location= conf.device ))
         # if not model_only:
         #     self.head.load_state_dict(torch.load(save_path/'head_{}'.format(fixed_str)))
@@ -135,7 +135,7 @@ class face_learner(object):
         return accuracy.mean(), best_thresholds.mean(), roc_curve_tensor
 
     def find_lr(self,
-                conf,
+                conf, 
                 init_value=1e-8,
                 final_value=10.,
                 beta=0.98,

@@ -91,9 +91,7 @@ def distance(source_embs, target_embs):
 def caculate_distace_foler(rootdir, parse_text_file):
     
     conf = get_config(False)
-
     mtcnn = MTCNN()
-
     learner = face_learner(conf, True)
     learner.threshold = args.threshold
     if conf.device.type == 'cpu':
@@ -109,11 +107,12 @@ def caculate_distace_foler(rootdir, parse_text_file):
     folder = os.listdir(rootdir) 
     for path in tqdm.tqdm(folder): 
         dirs = os.path.join(rootdir,path)
-        embs, name = extract_folder_image(Path(dirs) ,conf , learner.model, mtcnn, tta= args.tta)
-        if embs !=None and name !=None:
+        try:
+            embs, name = extract_folder_image(Path(dirs) ,conf , learner.model, mtcnn, tta= args.tta)
             embedding.append(embs)
             names.append(name)
-        print(embs.shape)
+        except: 
+            continue
     # if os.path.exists(parse_text_file): 
     #     pass 
     # else: 
@@ -142,12 +141,13 @@ def caculate_distance_image(root_folder,parse_text_file):
     
     folder = os.listdir(root_folder) 
     for file in folder: 
-        img = os.path.join(root_folder,file)     
-        embs, name = extract_single_image(img, conf, learner.model, mtcnn, tta= args.tta)
-        if embs !=None and name !=None:
+        try:
+            img = os.path.join(root_folder,file)     
+            embs, name = extract_single_image(img, conf, learner.model, mtcnn, tta= args.tta)
             embedding.append(embs)
             names.append(name)
-        
+        except: 
+            continue
     if os.path.exists(parse_text_file): 
         pass 
     else: 
@@ -159,6 +159,7 @@ def caculate_distance_image(root_folder,parse_text_file):
                 _, score = distance(embs1, embs2)
                 line = 'distance image:{} -> image:{} is:{:.4f} \n'.format(names[0],names[i],score[0])
                 fs.write(line)
+            
             for i in range(2,len(embedding)):      
                 _, score = distance(embedding[1],embedding[i])
                 line = 'distance image:{} -> image:{} is:{:.4f} \n'.format(names[1],names[i],score[0])
@@ -168,8 +169,8 @@ def caculate_distance_image(root_folder,parse_text_file):
 if __name__ == '__main__':
 
     # path_folder = '/home/minglee/Documents/aiProjects/VN-celeb/1'
-    root_text_file = '/home/minglee/Documents/aiProjects/VN-celeb-results' 
-    rootdir = '/home/minglee/Documents/aiProjects/VN-celeb'
+    root_text_file = '/mnt/DATA/duydmFabbi/model_train/evaluate_vn_celeb'
+    rootdir = '/mnt/DATA/duydmFabbi/dataFace/VN-CELEB-DATASET/VN-celeb'
     
     for dirs in tqdm.tqdm(os.listdir(rootdir)):     
         path_sub_class = os.path.join(rootdir, dirs)

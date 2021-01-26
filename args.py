@@ -31,7 +31,7 @@ th = 0.1  #threshold of probility pnet mtcnn
 # paths in local
 evaluate_dataset = '/home/minglee/Documents/aiProjects/VN-celeb'
 root_dir = '/home/minglee/Documents/aiProjects/git_clone/InsightFace_Pytorch/save_embedding'
-out_dir  = '/home/minglee/Documents/aiProjects/git_clone/InsightFace_Pytorch'
+out_dir  = '/mnt/DATA/duydmFabbi/model_train'
 model_save_interval = 1
 load_pretrained_paths = ''
 

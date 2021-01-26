@@ -20,10 +20,10 @@ class face_learner(object):
     def __init__(self, conf, inference=False):
         if conf.use_mobilfacenet:
             self.model = MobileFaceNet(conf.embedding_size).to(conf.device)
-            print('MobileFaceNet model generated')
+            # print('MobileFaceNet model generated')
         else:
             self.model = Backbone(conf.net_depth, conf.drop_ratio, conf.net_mode).to(conf.device)
-            print('{}_{} model generated done !'.format(conf.net_mode, conf.net_depth))
+            # print('{}_{} model generated done !'.format(conf.net_mode, conf.net_depth))
 
         if not inference:
             self.milestones = conf.milestones
@@ -33,7 +33,7 @@ class face_learner(object):
             self.step = 0
             self.head = Arcface(embedding_size=conf.embedding_size, classnum=self.class_num).to(conf.device)
 
-            print('two model heads generated')
+            # print('two model heads generated')
 
             paras_only_bn, paras_wo_bn = separate_bn_paras(self.model)
 
@@ -267,7 +267,7 @@ class face_learner(object):
 
         diff = source_embs.unsqueeze(-1) - target_embs.transpose(1,0).unsqueeze(0)
         dist = torch.sum(torch.pow(diff, 2), dim=1)
-        print("distance: {}".format(dist))
+        # print("distance: {}".format(dist))
         minimum, min_idx = torch.min(dist, dim=1)
         # print(minimum)
         min_idx[minimum > self.threshold] = -1 # if no match, set idx to -1
